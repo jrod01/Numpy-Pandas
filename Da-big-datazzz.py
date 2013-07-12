@@ -384,6 +384,144 @@ Out[63]: array([7, 8, 9])
 arr3d = np.array([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
 
 
+names = np.array(['Bob', 'Joe', 'Will', 'Bob', 'Will', 'Joe', 'Joe'])
+data = randn(7, 4)
+names
+
+array(['Bob', 'Joe', 'Will', 'Bob', 'Will', 'Joe', 'Joe'], dtype='|S4')
+
+
+#Fancy indexing
+
+arr = np.empty((8,4))
+
+for i in range(8):
+	arr[i] = i
+
+
+arr = np.arange(32).reshape((8, 4))
+
+#tranposing Arrays and swapping axes
+
+arr = np.arange(15).reshape((3, 5))
+
+#matrix computations
+
+arr = np.random.randn(6, 3)
+np.dot(arr.T, arr)
+
+#data processing arrays
+
+points = np.arange(-5, 5, 0.01) # 1000 equally spaced points
+
+xs, ys = np.meshgrid(points, points)
+
+import matplotlib.pyplot as plt
+
+In [7]: z = np.sqrt(xs ** 2 + ys ** 2)
+z
+
+plt.imshow(z, cmap=plt.cm.gray); plt.colorbar()
+Out[137]: <matplotlib.colorbar.Colorbar instance at 0x4e46d40>
+
+plt.title("Image plot of $\sqrt{x^2 + y^2}$ for a grid of values")
+Out[138]: <matplotlib.text.Text at 0x4565790>
+
+#Expressing Conditional Logic as Array Operations
+
+x if condi tion else y
+
+xarr = np.array([1.1, 1.2, 1.3, 1.4, 1.5])
+yarr = np.array([2.1, 2.2, 2.3, 2.4, 2.5])
+
+cond = np.array([True, False, True, True, False])
+
+In [26]: result = [(x if c else y)
+   ....: for x, y, c in zip(xarr, yarr, cond)]
+
+
+
+
+In [27]: result
+Out[27]: [1.1000000000000001, 2.2000000000000002, 1.3, 1.3999999999999999, 2.5]
+
+In [28]: result = np.where(cond, xarr, yarr)
+
+In [29]: result
+Out[29]: array([ 1.1,  2.2,  1.3,  1.4,  2.5])
+
+In [30]: arr = randn(4,4)
+
+In [31]: arr
+Out[31]:
+array([[ 0.41874258,  0.48486755, -1.70226337,  0.16275618],
+       [-0.24167952,  0.01220327,  0.725407  ,  1.37563996],
+       [ 0.79233435, -1.08395748, -0.84864348,  0.62794599],
+       [-0.91987313,  1.89445335,  0.11862593,  0.10668056]])
+
+In [32]: np.where(arr > 0, 2, -2)
+Out[32]:
+array([[ 2,  2, -2,  2],
+       [-2,  2,  2,  2],
+       [ 2, -2, -2,  2],
+       [-2,  2,  2,  2]])
+
+In [33]: np.where(arr > 0, 2, arr) #set only positive values to 2
+Out[33]:
+array([[ 2.        ,  2.        , -1.70226337,  2.        ],
+       [-0.24167952,  2.        ,  2.        ,  2.        ],
+       [ 2.        , -1.08395748, -0.84864348,  2.        ],
+       [-0.91987313,  2.        ,  2.        ,  2.        ]])
+
+result = []
+for i in range(n):
+  if cond1[i] and cond2[i]:
+  	result.append(0)
+  elif cond1[i]:
+  	result.append(1)
+  elif cond2[i]:
+  	result.append(2)
+else:
+	result.append(3)
+￼￼
+
+#Data Processing Using Arrays
+
+
+np.where(cond1 & cond2, 0, np.where(cond1, 1,
+np.where(cond2, 2, 3)))
+
+#Mathematical nd statistical methods
+
+In [40]: arr = np.random.randn(5, 4) #normally distributed data
+
+In [41]: arr.mean()
+Out[41]: 0.12643648648336564
+
+In [42]: np.mean(arr)
+Out[42]: 0.12643648648336564
+
+In [43]: arr.sum()
+Out[43]: 2.528729729667313
+
+In [40]: arr = np.random.randn(5, 4) #normally distributed data
+
+In [41]: arr.mean()
+Out[41]: 0.12643648648336564
+
+In [42]: np.mean(arr)
+Out[42]: 0.12643648648336564
+
+In [43]: arr.sum()
+Out[43]: 2.528729729667313
+
+In [44]: arr.mean(axis-1)
+
+TypeError: unsupported operand type(s) for -: 'function' and 'int'
+
+In [45]: arr.mean(axis=1)
+Out[45]: array([-0.34598076, -0.65001402,  0.55031539,  0.53287924,  0.54498258])
+
 
 
 
