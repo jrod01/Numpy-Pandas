@@ -910,3 +910,201 @@ In [98]: crossing_times = (np.abs(walks[hits30]) >= 30).argmax(1)
 
 In [99]: crossing_times.mean()
 Out[99]: 503.79953106682296
+
+
+#getting started with pandas
+
+In [1]: from pandas import Series, DataFrame
+In [2]: import pandas as pd
+
+#series
+
+
+In [103]: from pandas import Series, DataFrame
+
+In [104]: import pandas as pd
+
+In [105]: obj = Series([4, 7, -5, 3])
+
+In [106]: obj
+Out[106]:
+0    4
+1    7
+2   -5
+3    3
+
+In [107]: obj.values
+Out[107]: array([ 4,  7, -5,  3], dtype=int64)
+
+In [108]: obj.index
+Out[108]: Int64Index([0, 1, 2, 3], dtype=int64)
+
+In [109]: obj2 = Series([4, 7, -5, 3], index=['d', 'b', 'a', 'c'])
+
+In [110]: obj2
+Out[110]:
+d    4
+b    7
+a   -5
+c    3
+
+In [111]: obj2.index
+Out[111]: Index([d, b, a, c], dtype=object)
+
+n [117]: obj2['d'] = 6
+
+In [118]: obj2[['c', 'a', 'd']]
+Out[118]:
+c    3
+a   -5
+d    6
+
+In [119]: obj2
+Out[119]:
+d    6
+b    7
+a   -5
+c    3
+
+In [120]: obj2[obj2 > 0]
+Out[120]:
+d    6
+b    7
+c    3
+
+In [121]: obj2 * 2
+Out[121]:
+d    12
+b    14
+a   -10
+c     6
+
+In [122]: np.exp(obj2)
+Out[122]:
+d     403.428793
+b    1096.633158
+a       0.006738
+c      20.085537
+
+In [123]: 'b' in obj2
+Out[123]: True
+
+In [124]: 'e' in obj2
+Out[124]: False
+
+In [125]: sdata = {'Ohio' : 35000, 'Texas': 71000, 'Oregon': 16000, 'Utah': 5000}
+
+In [126]: obj3 = Series(sdata)
+
+In [127]: obj3
+Out[127]:
+Ohio      35000
+Oregon    16000
+Texas     71000
+Utah       5000
+
+In [128]: states = ['California', 'Ohio', 'Texas']
+
+In [129]: obj4 = Series(sdata, index=states)
+
+In [130]: obj4
+Out[130]:
+California      NaN
+Ohio          35000
+Texas         71000
+
+
+In [131]: pd.isnull(obj4)
+Out[131]:
+California     True
+Ohio          False
+Texas         False
+
+In [132]: pd.notnull(obj4)
+Out[132]:
+California    False
+Ohio           True
+Texas          True
+
+In [133]: obj4.isnull()
+Out[133]:
+California     True
+Ohio          False
+Texas         False
+
+In [134]: obj3
+Out[134]:
+Ohio      35000
+Oregon    16000
+Texas     71000
+Utah       5000
+
+In [135]: obj4
+Out[135]:
+California      NaN
+Ohio          35000
+Texas         71000
+
+In [136]: obj3 + obj4
+Out[136]:
+California       NaN
+Ohio           70000
+Oregon           NaN
+Texas         142000
+Utah             NaN
+
+In [137]: obj4.name = 'population'
+
+In [138]: obj4.index.name = 'state'
+
+In [140]: obj4
+Out[140]:
+state
+California      NaN
+Ohio          35000
+Texas         71000
+Name: population
+
+In [141]: obj.index = ['Bob', 'Steve', 'Jeff', 'Ryan']
+
+In [142]: obj
+Out[142]:
+Bob      4
+Steve    7
+Jeff    -5
+Ryan     3
+
+#DataFrame
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
