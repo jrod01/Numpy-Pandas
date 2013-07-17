@@ -1190,9 +1190,16 @@ three  2002    Ohio  3.6   NaN
 four   2001  Nevada  2.4  -1.5
 five   2002  Nevada  2.9  -1.7
 
+n [28]: frame2['eastern'] = frame2.state == 'Ohio'
 
-
-
+In [29]: frame2
+Out[29]:
+       year   state  pop  debt eastern
+one    2000    Ohio  1.5   NaN    True
+two    2001    Ohio  1.7  -1.2    True
+three  2002    Ohio  3.6   NaN    True
+four   2001  Nevada  2.4  -1.5   False
+five   2002  Nevada  2.9  -1.7   False
 
 
 
