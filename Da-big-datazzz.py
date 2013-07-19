@@ -1201,31 +1201,128 @@ three  2002    Ohio  3.6   NaN    True
 four   2001  Nevada  2.4  -1.5   False
 five   2002  Nevada  2.9  -1.7   False
 
+#Index objects
+
+In [3]: from pandas import Series, DataFrame
+
+In [4]: import pandas as pd
+
+In [5]: obj = Series(range(3), index=['a', 'b', 'c'])
+
+In [6]: index = obj.index
+
+In [7]: index
+Out[7]: Index([a, b, c], dtype=object)
+
+In [8]: index[1:]
+Out[8]: Index([b, c], dtype=object)
+
+In [9]: index[1]
+Out[9]: 'b'
+
+In [10]: index[1] = 'd'
+---------------------------------------------------------------------------
+Exception                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-10-676fdeb26a68> in <module>()
+----> 1 index[1] = 'd'
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/index.pyc in __setitem__(self, key, value)
+    350
+    351     def __setitem__(self, key, value):
+--> 352         raise Exception(str(self.__class__) + ' object is immutable')
+    353
+    354     def __getitem__(self, key):
+
+Exception: <class 'pandas.core.index.Index'> object is immutable
+
+##############################
+#Index objects are immutable #
+##############################
+
+In [14]: index = pd.Index(np.arange(3))
+
+In [15]: obj2 = Series([1.5, -2.5, 0], index=index)
+
+In [16]: obj2.index is index
+Out[16]: True
 
 
+#Essential Functionality
 
+In [17]: obj = Series([4.5, 7.2, -5.3, 3.6], index=['d', 'b', 'a', 'c'])
 
+In [18]: obj
+Out[18]:
+d    4.5
+b    7.2
+a   -5.3
+c    3.6
 
+In [19]: obj2 = obj.reindex(['a', 'b', 'c', 'd', 'e'])
 
+In [20]: obj2
+Out[20]:
+a   -5.3
+b    7.2
+c    3.6
+d    4.5
+e    NaN
 
+In [21]: obj.reindex(['a', 'b', 'c', 'd', 'e'], fill_value=0)
+Out[21]:
+a   -5.3
+b    7.2
+c    3.6
+d    4.5
+e    0.0
 
+In [22]: obj3 - Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-22-52ed86d61b38> in <module>()
+----> 1 obj3 - Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
 
+NameError: name 'obj3' is not defined
 
+In [23]: obj3 = Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
 
+In [24]: obj3.reindex(range(6), method= 'ffill')
+Out[24]:
+0      blue
+1      blue
+2    purple
+3    purple
+4    yellow
+5    yellow
 
+In [27]: frame = DataFrame(np.arange(9).reshape((3, 3)), index=['a', 'c', 'd'],
+   ....: columns=['Ohio', 'Texas', 'California'])
 
+In [28]: frame
+Out[28]:
+   Ohio  Texas  California
+a     0      1           2
+c     3      4           5
+d     6      7           8
 
+In [29]: frame2 = frame.reindex(['a', 'b', 'c', 'd'])
 
+In [30]: frame2
+Out[30]:
+   Ohio  Texas  California
+a     0      1           2
+b   NaN    NaN         NaN
+c     3      4           5
+d     6      7           8
 
+In [37]: states = ['California', 'Ohio', 'Texas']
 
-
-
-
-
-
-
-
-
-
-
+In [38]: frame.reindex(index=['a', 'b', 'c', 'd'], method='ffill',
+   ....: columns=states)
+Out[38]:
+   California  Ohio  Texas
+a           2     0      1
+b           2     0      1
+c           5     3      4
+d           8     6      7
 
