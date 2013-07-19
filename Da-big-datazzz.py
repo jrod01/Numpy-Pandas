@@ -1373,6 +1373,125 @@ Colorado    4      6
 Utah        8     10
 New York   12     14
 
+#indexing, selection and filtering
+
+In [50]: obj = Series(np.arange(4.), index=['a', 'b', 'c', 'd'])
+
+In [51]: obj['b']
+Out[51]: 1.0
+
+In [52]: obj[1]
+Out[52]: 1.0
+
+In [53]: obj[2:4]
+Out[53]:
+c    2
+d    3
+
+In [54]: obj[['b', 'a', 'd']]
+Out[54]:
+b    1
+a    0
+d    3
+
+In [55]: obj[[1, 3]]
+Out[55]:
+b    1
+d    3
+
+In [56]: obj[obj < 2]
+Out[56]:
+a    0
+b    1
+
+In [57]: obj['b';'c']
+  File "<ipython-input-57-0b81b57dca3e>", line 1
+    obj['b';'c']
+           ^
+SyntaxError: invalid syntax
+
+
+In [58]: obj['b':'c']
+Out[58]:
+b    1
+c    2
+
+In [59]: obj['b':'c'] = 5
+
+In [60]: obj
+Out[60]:
+a    0
+b    5
+c    5
+d    3
+
+
+In [64]: data
+Out[64]:
+          one  two  three  four
+Ohio        0    1      2     3
+Colorado    4    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+
+In [65]: data < 5
+Out[65]:
+            one    two  three   four
+Ohio       True   True   True   True
+Colorado   True  False  False  False
+Utah      False  False  False  False
+New York  False  False  False  False
+
+In [66]: data[data < 5] = 0
+
+In [67]: data
+Out[67]:
+          one  two  three  four
+Ohio        0    0      0     0
+Colorado    0    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+
+
+In [68]: data.ix['colorado', ['two', 'three']]
+---------------------------------------------------------------------------
+
+In [69]: data.ix['Colorado', ['two', 'three']]
+Out[69]:
+two      5
+three    6
+Name: Colorado
+
+In [70]: data.ix[['Colorado', 'Utah'], [3, 0, 1]]
+Out[70]:
+          four  one  two
+Colorado     7    0    5
+Utah        11    8    9
+
+In [71]: data.ix[2]
+Out[71]:
+one       8
+two       9
+three    10
+four     11
+Name: Utah
+
+In [72]: data.ix[:'Utah', 'two']
+Out[72]:
+Ohio        0
+Colorado    5
+Utah        9
+Name: two
+
+In [73]: data.ix[data.three > 5, :3]
+Out[73]:
+          one  two  three
+Colorado    0    5      6
+Utah        8    9     10
+New York   12   13     14
+
+
+
 
 
 
