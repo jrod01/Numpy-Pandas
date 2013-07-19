@@ -1326,3 +1326,72 @@ b           2     0      1
 c           5     3      4
 d           8     6      7
 
+#dropping entries from an axis
+
+In [40]: obj = Series(np.arange(5.), index=['a', 'b', 'c', 'd', 'e'])
+
+In [41]: new_obj = obj.drop('c')
+
+In [42]: new
+new_figure_manager  new_obj             newaxis             newbuffer
+
+In [42]: new_obj
+Out[42]:
+a    0
+b    1
+d    3
+e    4
+
+In [43]: obj.drop(['d', 'c'])
+Out[43]:
+a    0
+b    1
+e    4
+
+In [46]: data = DataFrame(np.arange(16).reshape((4, 4)),
+   ....: index=['Ohio', 'Colorado', 'Utah', 'New York'],
+   ....: columns=['one', 'two', 'three', 'four'])
+
+In [47]: data.drop(['Colorado', 'Ohio'])
+Out[47]:
+          one  two  three  four
+Utah        8    9     10    11
+New York   12   13     14    15
+
+Out[48]:
+          one  three  four
+Ohio        0      2     3
+Colorado    4      6     7
+Utah        8     10    11
+New York   12     14    15
+
+In [49]: data.drop(['two', 'four'], axis=1)
+Out[49]:
+          one  three
+Ohio        0      2
+Colorado    4      6
+Utah        8     10
+New York   12     14
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
