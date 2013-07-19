@@ -1490,6 +1490,67 @@ Colorado    0    5      6
 Utah        8    9     10
 New York   12   13     14
 
+# arithmetic and data alignment
+
+
+In [74]: s1 = Series([7.3, -2.5, 3.4, 1.5], index=['a', 'c', 'd', 'e'])
+
+In [75]: s2 = Series([-2.1, 3.6, -1.5, 4, 3.1], index=['a', 'c', 'e', 'f', 'g'])
+
+In [76]: s1
+Out[76]:
+a    7.3
+c   -2.5
+d    3.4
+e    1.5
+
+In [77]: s2
+Out[77]:
+a   -2.1
+c    3.6
+e   -1.5
+f    4.0
+g    3.1
+
+In [78]: s1 + s2
+Out[78]:
+a    5.2
+c    1.1
+d    NaN
+e    0.0
+f    NaN
+g    NaN
+
+
+In [80]: df1 = DataFrame(np.arange(9.).reshape((3, 3)), columns=list('bcd'),
+   ....: index=['Ohio', 'Texas', 'Colorado'])
+
+In [81]: df2 = DataFrame(np.arange(12.).reshape((4,3)), columns=list('bde'),
+   ....: index=['Utah', 'Ohio', 'Texas', 'Oregon'])
+
+In [82]: df1
+Out[82]:
+          b  c  d
+Ohio      0  1  2
+Texas     3  4  5
+Colorado  6  7  8
+
+In [83]: df2
+Out[83]:
+        b   d   e
+Utah    0   1   2
+Ohio    3   4   5
+Texas   6   7   8
+Oregon  9  10  11
+
+In [84]: df1 + df2
+Out[84]:
+           b   c   d   e
+Colorado NaN NaN NaN NaN
+Ohio       3 NaN   6 NaN
+Oregon   NaN NaN NaN NaN
+Texas      9 NaN  12 NaN
+Utah     NaN NaN NaN NaN
 
 
 
