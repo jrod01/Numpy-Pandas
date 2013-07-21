@@ -1551,3 +1551,70 @@ Ohio       3 NaN   6 NaN
 Oregon   NaN NaN NaN NaN
 Texas      9 NaN  12 NaN
 Utah     NaN NaN NaN NaN
+
+# arithmetic methods with fill values
+
+In [85]: DataFrame(np.arange(12.).reshape((3, 4)), columns=list('abcd'))
+Out[85]:
+   a  b   c   d
+0  0  1   2   3
+1  4  5   6   7
+2  8  9  10  11
+
+In [86]: df1
+Out[86]:
+          b  c  d
+Ohio      0  1  2
+Texas     3  4  5
+Colorado  6  7  8
+
+In [87]: In [137]: df2
+Out[87]:
+        b   d   e
+Utah    0   1   2
+Ohio    3   4   5
+Texas   6   7   8
+Oregon  9  10  11
+
+
+In [89]: df1 = DataFrame(np.arange(12.).reshape((3, 4)), columns=list('abcd'))
+
+In [90]: df2 = DataFrame(np.arange(20.).reshape((4, 5)), columns=list('abcde'))
+
+In [91]: df1
+Out[91]:
+   a  b   c   d
+0  0  1   2   3
+1  4  5   6   7
+2  8  9  10  11
+
+In [92]: df2
+Out[92]:
+    a   b   c   d   e
+0   0   1   2   3   4
+1   5   6   7   8   9
+2  10  11  12  13  14
+3  15  16  17  18  19
+
+In [93]: df1 + df2
+Out[93]:
+    a   b   c   d   e
+0   0   2   4   6 NaN
+1   9  11  13  15 NaN
+2  18  20  22  24 NaN
+3 NaN NaN NaN NaN NaN
+
+In [94]: df1.add(df2, fill_value=0)
+Out[94]:
+    a   b   c   d   e
+0   0   2   4   6   4
+1   9  11  13  15   9
+2  18  20  22  24  14
+3  15  16  17  18  19
+
+In [95]: df1.reindex(columns=df2.columns, fill_value=0)
+Out[95]:
+   a  b   c   d  e
+0  0  1   2   3  0
+1  4  5   6   7  0
+2  8  9  10  11  0
