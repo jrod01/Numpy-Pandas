@@ -1551,27 +1551,3 @@ Ohio       3 NaN   6 NaN
 Oregon   NaN NaN NaN NaN
 Texas      9 NaN  12 NaN
 Utah     NaN NaN NaN NaN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
