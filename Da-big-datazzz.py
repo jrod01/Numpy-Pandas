@@ -1618,3 +1618,88 @@ Out[95]:
 0  0  1   2   3  0
 1  4  5   6   7  0
 2  8  9  10  11  0
+
+# operations between dataframe and series
+
+
+In [11]: arr = np.arange(12.).reshape((3, 4))
+
+In [12]: arr
+Out[12]:
+array([[  0.,   1.,   2.,   3.],
+       [  4.,   5.,   6.,   7.],
+       [  8.,   9.,  10.,  11.]])
+
+In [13]: arr[0]
+Out[13]: array([ 0.,  1.,  2.,  3.])
+
+In [14]: arr - arr[0]
+Out[14]:
+array([[ 0.,  0.,  0.,  0.],
+       [ 4.,  4.,  4.,  4.],
+       [ 8.,  8.,  8.,  8.]])
+
+In [15]: frame = DataFrame(np.arange(12.).reshape((4, 3)), columns=list('bde'),
+   ....: index=['Utah', 'Ohio', 'Texas', 'Oregon'])
+
+In [16]: series = frame.ix[0]
+
+In [17]: frame
+Out[17]:
+        b   d   e
+Utah    0   1   2
+Ohio    3   4   5
+Texas   6   7   8
+Oregon  9  10  11
+
+In [18]: series
+Out[18]:
+b    0
+d    1
+e    2
+Name: Utah
+
+In [19]: frame - series
+Out[19]:
+        b  d  e
+Utah    0  0  0
+Ohio    3  3  3
+Texas   6  6  6
+Oregon  9  9  9
+
+In [20]: series2 = Series(range(3), index=['b', 'e', 'f'])
+
+In [21]: frame + series2
+Out[21]:
+        b   d   e   f
+Utah    0 NaN   3 NaN
+Ohio    3 NaN   6 NaN
+Texas   6 NaN   9 NaN
+Oregon  9 NaN  12 NaN
+
+In [22]: series3 = frame['d']
+
+In [23]: frame
+Out[23]:
+        b   d   e
+Utah    0   1   2
+Ohio    3   4   5
+Texas   6   7   8
+Oregon  9  10  11
+
+In [24]: series3
+Out[24]:
+Utah       1
+Ohio       4
+Texas      7
+Oregon    10
+Name: d
+
+In [25]: frame.sub(series3, axis=0)
+Out[25]:
+        b  d  e
+Utah   -1  0  1
+Ohio   -1  0  1
+Texas  -1  0  1
+Oregon -1  0  1
+
