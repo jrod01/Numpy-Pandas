@@ -1076,7 +1076,7 @@ Ryan     3
 
 #DataFrame
 
-In [2]: from pandas import Series, DataFrame
+In [2]: ç
 
 In [3]: import pandas as pd
 
@@ -1702,4 +1702,93 @@ Utah   -1  0  1
 Ohio   -1  0  1
 Texas  -1  0  1
 Oregon -1  0  1
+
+#Function application and mapping
+#NumPy ufuncs (element-wise array methods) work fine with panda objects:
+
+In [5]: from pandas import Series, DataFrame
+
+In [6]: import pandas as pd
+
+In [7]: frame = DataFrame(np.random.randn(4, 3), columns=list('bde'),
+   ...: index=['Utah', 'Ohio', 'Texas', 'Oregon'])
+
+In [8]: frame
+Out[8]:
+               b         d         e
+Utah   -1.021380  1.039845  1.620518
+Ohio    0.946591  0.907383 -1.636917
+Texas   1.341285 -0.920366  1.744208
+Oregon -0.294026 -0.809490 -1.044885
+
+In [9]: np.abs(frame)
+Out[9]:
+               b         d         e
+Utah    1.021380  1.039845  1.620518
+Ohio    0.946591  0.907383  1.636917
+Texas   1.341285  0.920366  1.744208
+Oregon  0.294026  0.809490  1.044885
+
+#Another frequent operation in 1d arrays to each column or row dataframe method -> apply does that.
+
+In [12]: f = lambda x: x.max() - x.min()
+
+In [13]: frame.apply(f)
+Out[13]:
+b    2.362665
+d    1.960211
+e    3.381126
+
+In [14]: frame.apply(f, axis=1)
+Out[14]:
+Utah      2.641898
+Ohio      2.583508
+Texas     2.664574
+Oregon    0.750859
+
+In [15]: def f(x):
+   ....:     return Series([x.min(), x.max()], index=['min', 'max'])
+   ....:
+
+In [16]: frame.apply(f)
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.py:3576: FutureWarning: rename with inplace=True  will return None from pandas 0.11 onward
+  " from pandas 0.11 onward", FutureWarning)
+Out[16]:
+            b         d         e
+min -1.021380 -0.920366 -1.636917
+max  1.341285  1.039845  1.744208
+
+In [17]: format = lambda x: '%2f' % x
+
+In [18]: frame.applymap(format)
+Out[18]:
+                b          d          e
+Utah    -1.021380   1.039845   1.620518
+Ohio     0.946591   0.907383  -1.636917
+Texas    1.341285  -0.920366   1.744208
+Oregon  -0.294026  -0.809490  -1.044885
+
+In [19]: frame['e'].map(format)
+Out[19]:
+Utah       1.620518
+Ohio      -1.636917
+Texas      1.744208
+Oregon    -1.044885
+Name: e
+
+In [20]: obj = Series(range(4), index=['d', 'a', 'b', 'c'])
+
+In [21]: obj.sort_index()
+Out[21]:
+a    1
+b    2
+c    3
+d    0
+
+#sorting and ranking
+
+
+
+
+
 
