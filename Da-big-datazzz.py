@@ -1971,6 +1971,78 @@ Out[31]:
 
 In [32]: 
 
+# axes indexes with duplicate values 
+
+In [1]: from pandas import Series, DataFrame
+
+In [2]: import pandas as pd 
+
+In [3]: obj = Series(range(5), index=['a', 'a', 'b', 'c'])
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+/Users/Makindo/<ipython-input-3-3475237754ee> in <module>()
+----> 1 obj = Series(range(5), index=['a', 'a', 'b', 'c'])
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/series.pyc in __new__(cls, data, index, dtype, name, copy)
+    385         else:
+    386             subarr = subarr.view(Series)
+--> 387         subarr.index = index
+    388         subarr.name = name
+    389 
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/lib.so in pandas.lib.SeriesIndex.__set__ (pandas/lib.c:27864)()
+
+AssertionError: Index length did not match values
+
+In [4]: obj = Series(range(5), index=['a', 'a', 'b', 'b', 'c'])
+
+In [5]: obj
+Out[5]: 
+a    0
+a    1
+b    2
+b    3
+c    4
+
+In [6]: ojb.index.is_unique
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-6-85887cad4995> in <module>()
+----> 1 ojb.index.is_unique
+
+NameError: name 'ojb' is not defined
+
+In [7]: obj.index.is_unique
+Out[7]: False
+
+In [8]: obj['a']
+Out[8]: 
+a    0
+a    1
+
+In [9]: obj['c']
+Out[9]: 4
+
+In [10]: df = DataFrame(np.random.randn(4, 3), index=['a', 'a', 'b', 'b'])
+
+In [11]: df
+Out[11]: 
+          0         1         2
+a  0.512327 -0.198731 -1.271832
+a  0.753982  0.513032  0.928941
+b -1.565693 -0.052944  0.286924
+b -0.861644 -0.114541  0.152211
+
+In [12]: df.ix['b']
+Out[12]: 
+          0         1         2
+b -1.565693 -0.052944  0.286924
+b -0.861644 -0.114541  0.152211
+
+In [13]: 
+
+
+
 
 
 
