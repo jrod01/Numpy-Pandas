@@ -1787,6 +1787,194 @@ d    0
 
 #sorting and ranking
 
+In [2]: from pandas import Series, DataFrame
+
+In [3]: import pandas as pd 
+
+In [4]: ibj = Series(range(4), index=['d', 'a', 'b', 'c'])
+
+In [5]: obj.sort_index()
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-5-733170f67016> in <module>()
+----> 1 obj.sort_index()
+
+NameError: name 'obj' is not defined
+
+In [6]: obj = Series(range(4), index=['d', 'a', 'b', 'c'])
+
+In [7]: ibj.sort_index()
+Out[7]: 
+a    1
+b    2
+c    3
+d    0
+
+In [8]: obj.sort_index()
+Out[8]: 
+a    1
+b    2
+c    3
+d    0
+
+n [9]: frame = Dataframe(np.arange(8).reshape((2, 4)), index=['three', 'one'],
+   ...: columns=['d', 'a', 'b', 'c'])
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-9-e389ed947846> in <module>()
+----> 1 frame = Dataframe(np.arange(8).reshape((2, 4)), index=['three', 'one'],
+      2 columns=['d', 'a', 'b', 'c'])
+
+NameError: name 'Dataframe' is not defined
+
+In [10]: frame = DataFrame(np.arange(8).reshape((2, 4)), index=['three', 'one'],   ....: columns=['d', 'a', 'b', 'c'])
+
+In [11]: frame.sort_index()
+Out[11]: 
+       d  a  b  c
+one    4  5  6  7
+three  0  1  2  3
+
+In [12]: frame.sort_index(axis=1)
+Out[12]: 
+       a  b  c  d
+three  1  2  3  0
+one    5  6  7  4
+
+In [13]: frame.sort_index(axis=1, ascending=False)
+Out[13]: 
+       d  c  b  a
+three  0  3  2  1
+one    4  7  6  5
+
+In [14]: obj = Series([4, 7, -3, 2)]
+  File "<ipython-input-14-0f3bc1f7c801>", line 1
+    obj = Series([4, 7, -3, 2)]
+                             ^
+SyntaxError: invalid syntax
+
+
+In [15]: obj = Series([4, 7, -3, 2])
+
+In [16]: obj.order
+Out[16]: 
+<bound method Series.order of 0    4
+1    7
+2   -3
+3    2>
+
+In [17]: obj = Series([4, np.nan, 7, np.nan, -3, 2])
+
+In [18]: obj.order()
+Out[18]: 
+4    -3
+5     2
+0     4
+2     7
+1   NaN
+3   NaN
+
+In [19]: frame = DateFrame({'b': [4, 7, -3, 2], 'a': [0, 1, 0,1]})
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-19-557550abd36a> in <module>()
+----> 1 frame = DateFrame({'b': [4, 7, -3, 2], 'a': [0, 1, 0,1]})
+
+NameError: name 'DateFrame' is not defined
+
+In [20]: frame = DataFrame({'b': [4, 7, -3, 2], 'a': [0, 1, 0, 1]})
+
+In [21]: frame
+Out[21]: 
+   a  b
+0  0  4
+1  1  7
+2  0 -3
+3  1  2
+
+In [22]: frame.sort_index(by='b')
+Out[22]: 
+   a  b
+2  0 -3
+3  1  2
+0  0  4
+1  1  7
+
+In [23]: frame.sort_index(by=['a', 'b'])
+Out[23]: 
+   a  b
+2  0 -3
+0  0  4
+3  1  2
+1  1  7
+
+In [24]: obj = Series([7, -5, 7, 4, 2, 0, 4])
+
+In [25]: obj.rank()
+Out[25]: 
+0    6.5
+1    1.0
+2    6.5
+3    4.5
+4    3.0
+5    2.0
+6    4.5
+
+In [26]: obj.rank(method='first')
+Out[26]: 
+0    6
+1    1
+2    7
+3    4
+4    3
+5    2
+6    5
+
+In [27]: obj.rank(ascending=False, method='max')
+Out[27]: 
+0    2
+1    7
+2    2
+3    4
+4    5
+5    6
+6    4
+
+In [28]: frame = Dataframe({'b': [4.3, 7, -3, 2], 'a': [0, 1, 0, 1], 
+   ....: 'c' : [-2, 5, 8, -2.5]})
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-28-985cc0fdda71> in <module>()
+----> 1 frame = Dataframe({'b': [4.3, 7, -3, 2], 'a': [0, 1, 0, 1], 
+      2 'c' : [-2, 5, 8, -2.5]})
+
+NameError: name 'Dataframe' is not defined
+
+In [29]: frame = DataFrame({'b': [4.3, 7, -3, 2], 'a': [0, 1, 0, 1],
+   ....: 'c': [-2, 5, 8, -2.5]})
+
+In [30]: frame
+Out[30]: 
+   a    b    c
+0  0  4.3 -2.0
+1  1  7.0  5.0
+2  0 -3.0  8.0
+3  1  2.0 -2.5
+
+In [31]: frame.rank(axis=1)
+Out[31]: 
+   a  b  c
+0  2  3  1
+1  1  3  2
+2  2  1  3
+3  2  3  1
+
+In [32]: 
+
+
+
+
+
 
 
 
