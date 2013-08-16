@@ -2245,6 +2245,108 @@ GOOG    0.062644
 IBM    -0.007905
 MSFT   -0.014217
 
+# unique values, value counts and membership 
+
+In [46]: obj = Series(['c', 'a', 'd', 'a', 'a', 'b', 'b', 'c', 'c'])
+
+In [47]: uniques = obj.unique()
+
+In [48]: uniques
+Out[48]: array([c, a, d, b], dtype=object)
+
+In [49]: array([c, a, d, b], dtype=object)
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-49-8664b7873d63> in <module>()
+----> 1 array([c, a, d, b], dtype=object)
+
+NameError: name 'c' is not defined
+
+In [50]: obj.value_counts()
+Out[50]: 
+c    3
+a    3
+b    2
+d    1
+
+In [51]: pd.value_counts(obj.values, sort=False)
+Out[51]: 
+a    3
+c    3
+b    2
+d    1
+
+In [52]: pd.value_counts(obj.values, sort=False)
+Out[52]: 
+a    3
+c    3
+b    2
+d    1
+
+In [53]: mask = obj.isin(['b', 'c'])
+
+In [54]: mask
+Out[54]: 
+0     True
+1    False
+2    False
+3    False
+4    False
+5     True
+6     True
+7     True
+8     True
+
+In [55]: obj[mask]
+Out[55]: 
+0    c
+5    b
+6    b
+7    c
+8    c
+
+In [56]: data = DataFrame({'Qu1': [1, 3, 4, 3, 4],
+   ....: 'Qu2': [2, 3, 1, 2, 3],
+   ....: 'Qu3': [1, 5, 2, 4, 4]})
+
+In [57]: data
+Out[57]: 
+   Qu1  Qu2  Qu3
+0    1    2    1
+1    3    3    5
+2    4    1    2
+3    3    2    4
+4    4    3    4
+
+In [58]: result = data.apply(pd.value_counts).fillna(0)
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-
+intel.egg/pandas/core/frame.py:3576: FutureWarning: rename with inplace=True  will return None from pandas 0.11 onward
+  " from pandas 0.11 onward", FutureWarning)
+
+In [59]: data
+Out[59]: 
+   Qu1  Qu2  Qu3
+0    1    2    1
+1    3    3    5
+2    4    1    2
+3    3    2    4
+4    4    3    4
+
+In [60]: result = data.apply(pd.value_counts).fillna(0)
+
+In [61]: result
+Out[61]: 
+   Qu1  Qu2  Qu3
+1    1    1    1
+2    0    2    1
+3    2    2    0
+4    2    0    2
+5    0    0    1
+
+
+
+
+
 
 
 
