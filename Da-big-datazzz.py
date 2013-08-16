@@ -2343,6 +2343,44 @@ Out[61]:
 4    2    0    2
 5    0    0    1
 
+# hadnling missing data 
+
+n [62]: string_data = Series(['aardvark', 'artichoke', np.man, 'avocado']) 
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/Users/Makindo/<ipython-input-62-db34a1a69d96> in <module>()
+----> 1 string_data = Series(['aardvark', 'artichoke', np.man, 'avocado'])
+
+AttributeError: 'module' object has no attribute 'man'
+
+In [63]: string_data = Series(['aardvark', 'artichoke', np.nan, 'avocado'])
+
+In [64]: string_data
+Out[64]: 
+0     aardvark
+1    artichoke
+2          NaN
+3      avocado
+
+In [65]: string_data.isnull()
+Out[65]: 
+0    False
+1    False
+2     True
+3    False
+
+In [66]: string_data[0] = None
+
+In [67]: string_data.isnull()
+Out[67]: 
+0     True
+1    False
+2     True
+3    False
+ 
+
+
+
 
 
 
