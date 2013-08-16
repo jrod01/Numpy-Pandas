@@ -2039,7 +2039,153 @@ Out[12]:
 b -1.565693 -0.052944  0.286924
 b -0.861644 -0.114541  0.152211
 
-In [13]: 
+
+In [13]: obj = Series(range(5), index=['a', 'a', 'b', 'b', 'c'])
+
+In [14]: obj
+Out[14]: 
+a    0
+a    1
+b    2
+b    3
+c    4
+
+In [15]: obj.index.is_unique
+Out[15]: False
+
+In [16]: obj['a']
+Out[16]: 
+a    0
+a    1
+
+In [17]: obj['b']
+Out[17]: 
+b    2
+b    3
+
+In [18]: obj['c']
+Out[18]: 4
+
+In [19]: df = Dat
+DataFrame      DataSource     DateFormatter  DateLocator    
+
+In [19]: df = DataFrame(np.random.randn(4, 3), index=['a', 'a', 'b', 'b'])
+
+In [20]: df
+Out[20]: 
+          0         1         2
+a  0.089692  0.161029  0.806586
+a  0.768763  0.892751 -0.498503
+b -1.161794 -0.780614 -1.553206
+b  2.026748  0.576726 -0.816021
+
+In [21]: df.ix['b']
+Out[21]: 
+          0         1         2
+b -1.161794 -0.780614 -1.553206
+b  2.026748  0.576726 -0.816021
+
+#Summarizing and Computing Descriptive statistics 
+
+In [23]: df = DataFrame([[1.4, np.nan], [7.1, -4.5],
+   ....: [np.nan, np.nan], [0.75, -1.3]],
+   ....: index=['a', 'b', 'c', 'd'],
+   ....: columns=['one', 'two'])
+
+In [24]: df
+Out[24]: 
+    one  two
+a  1.40  NaN
+b  7.10 -4.5
+c   NaN  NaN
+d  0.75 -1.3
+
+In [25]: df.dum()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/Users/Makindo/<ipython-input-25-f4a819757a15> in <module>()
+----> 1 df.dum()
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.pyc in __getattr__(self, name)
+   2044             return self[name]
+   2045         raise AttributeError("'%s' object has no attribute '%s'" %
+-> 2046                              (type(self).__name__, name))
+   2047 
+   2048     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'dum'
+
+In [26]: df.sum()
+Out[26]: 
+one    9.25
+two   -5.80
+
+In [27]: df.sum(axis=1)
+Out[27]: 
+a    1.40
+b    2.60
+c     NaN
+d   -0.55
+
+In [28]: df.means(axis=1, skipna=False)
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/Users/Makindo/<ipython-input-28-352cc97b574c> in <module>()
+----> 1 df.means(axis=1, skipna=False)
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.pyc in __getattr__(self, name)
+   2044             return self[name]
+   2045         raise AttributeError("'%s' object has no attribute '%s'" %
+-> 2046                              (type(self).__name__, name))
+   2047 
+   2048     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'means'
+
+In [29]: df.mean(axis=1, skipna=False)
+Out[29]: 
+a      NaN
+b    1.300
+c      NaN
+d   -0.275
+
+In [30]: df.idxmax()
+Out[30]: 
+one    b
+two    d
+
+In [31]: df.cumsum()
+Out[31]: 
+    one  two
+a  1.40  NaN
+b  8.50 -4.5
+c   NaN  NaN
+d  9.25 -5.8
+
+In [32]: df.describe()
+Out[32]: 
+            one       two
+count  3.000000  2.000000
+mean   3.083333 -2.900000
+std    3.493685  2.262742
+min    0.750000 -4.500000
+25%    1.075000 -3.700000
+50%    1.400000 -2.900000
+75%    4.250000 -2.100000
+max    7.100000 -1.300000
+
+In [33]: obj = Series(['a', 'a', 'b', 'c'] * 4)
+
+In [34]: obj.describe()
+Out[34]: 
+count     16
+unique     3
+top        a
+freq       8
+
+In [35]: 
+
+
 
 
 
