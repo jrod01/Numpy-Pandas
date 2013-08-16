@@ -2183,7 +2183,71 @@ unique     3
 top        a
 freq       8
 
-In [35]: 
+#correlation and covariance
+
+In [35]: import pandas.io.data as web 
+
+In [36]: all_data = {}
+
+In [37]: for ticker in ['AAPL', 'IBM', 'MSFT', 'GOOG']:
+   ....:     all_data[ticker] = web.get_data_yahoo(ticker, '1/1/2000', '1/1/2010')
+   ....:     price = DataFrame({tic: data['Adj Close']
+   ....:     for tic, data in all_data.iteritems()})
+   ....:     volume = DataFrame({tic: data['Volume']
+   ....:     for tic, data in all_data.iteritems()})
+   ....:     
+
+In [38]: returns = price.pct_change()
+
+In [39]: returns.tail()
+Out[39]: 
+                AAPL      GOOG       IBM      MSFT
+Date                                              
+2009-12-24  0.034342  0.011117  0.004439  0.002495
+2009-12-28  0.012297  0.007098  0.013257  0.005688
+2009-12-29 -0.011856 -0.005571 -0.003473  0.007070
+2009-12-30  0.012146  0.005376  0.005511 -0.013689
+2009-12-31 -0.004275 -0.004416 -0.012574 -0.015658
+
+In [40]: returns.MSFT.corr(returns.IBM)
+Out[40]: 0.49607155409807624
+
+In [41]: returns.MSFT.cov(returns.IBM)
+Out[41]: 0.00021598877352704983
+
+In [42]: returns.corr()
+Out[42]: 
+          AAPL      GOOG       IBM      MSFT
+AAPL  1.000000  0.470740  0.409959  0.424209
+GOOG  0.470740  1.000000  0.390578  0.443412
+IBM   0.409959  0.390578  1.000000  0.496072
+MSFT  0.424209  0.443412  0.496072  1.000000
+
+In [43]: returns.cov()
+Out[43]: 
+          AAPL      GOOG       IBM      MSFT
+AAPL  0.001028  0.000303  0.000252  0.000309
+GOOG  0.000303  0.000580  0.000142  0.000205
+IBM   0.000252  0.000142  0.000367  0.000216
+MSFT  0.000309  0.000205  0.000216  0.000516
+
+In [44]: returns.corrwith(returns.IBM)
+Out[44]: 
+AAPL    0.409959
+GOOG    0.390578
+IBM     1.000000
+MSFT    0.496072
+
+In [45]: returns.corrwith(volume)
+Out[45]: 
+AAPL   -0.057561
+GOOG    0.062644
+IBM    -0.007905
+MSFT   -0.014217
+
+
+
+
 
 
 
