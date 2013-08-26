@@ -2377,6 +2377,98 @@ Out[67]:
 1    False
 2     True
 3    False
+
+
+#filtering out missing data 
+
+In [2]: from pandas import Series, DataFrame
+
+In [3]: import pandas as pd
+
+In [4]: from numpy import nan as NA
+
+In [5]: data = Series([1, NA, 3.5, NA, 7])
+
+In [6]: data.dropna()
+Out[6]: 
+0    1.0
+2    3.5
+4    7.0
+
+In [7]: data[data.notnull()]
+Out[7]: 
+0    1.0
+2    3.5
+4    7.0
+
+In [8]: data = Dataframe([[1., 6.5, 3.], [1., NA, NA], 
+   ...: [NA, NA, NA], [NA, 6.5, 3.]])
+
+In [12]: cleaned = data.dropna()
+
+In [13]: data
+Out[13]: 
+    0    1   2
+0   1  6.5   3
+1   1  NaN NaN
+2 NaN  NaN NaN
+3 NaN  6.5   3
+
+In [14]: cleaned
+Out[14]: 
+   0    1  2
+0  1  6.5  3
+
+In [15]: data.dropna(how=' all')
+
+In [16]: data.dropna(how='all')
+Out[16]: 
+    0    1   2
+0   1  6.5   3
+1   1  NaN NaN
+3 NaN  6.5   3
+
+In [17]: data[4] = NA 
+
+In [18]: data
+Out[18]: 
+    0    1   2   4
+0   1  6.5   3 NaN
+1   1  NaN NaN NaN
+2 NaN  NaN NaN NaN
+3 NaN  6.5   3 NaN
+
+In [19]: data.dropna(axis=1, how='all')
+Out[19]: 
+    0    1   2
+0   1  6.5   3
+1   1  NaN NaN
+2 NaN  NaN NaN
+3 NaN  6.5   3
+
+In [20]: df
+
+In [21]: df = DataFrame(np.random.randn(7, 3))
+
+In [22]: df.ix[:4, 1] = NA; df.ix[:2, 2] = NA
+
+In [23]: df
+Out[23]: 
+          0         1         2
+0  0.788333       NaN       NaN
+1 -0.572234       NaN       NaN
+2  0.697601       NaN       NaN
+3 -0.496746       NaN -1.236334
+4  0.600980       NaN -0.820252
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
+In [24]: df.dropna(thresh=3)
+Out[24]: 
+          0         1         2
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
  
 
 
