@@ -2469,7 +2469,119 @@ Out[24]:
 5 -0.019347 -0.386139  0.062324
 6  0.320423 -0.993136 -0.594385
 
- 
+#filling in missing data 
+
+
+In [25]: df.fillna(0)
+Out[25]: 
+          0         1         2
+0  0.788333  0.000000  0.000000
+1 -0.572234  0.000000  0.000000
+2  0.697601  0.000000  0.000000
+3 -0.496746  0.000000 -1.236334
+4  0.600980  0.000000 -0.820252
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
+In [26]: df.fillna({1: 0.5, 3: -1})
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/series.py:2479: FutureWarning: Series.fillna with inplace=True  will return None from pandas 0.11 onward
+  " from pandas 0.11 onward", FutureWarning)
+Out[26]: 
+          0         1         2
+0  0.788333  0.500000       NaN
+1 -0.572234  0.500000       NaN
+2  0.697601  0.500000       NaN
+3 -0.496746  0.500000 -1.236334
+4  0.600980  0.500000 -0.820252
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
+In [27]: df.fillna({1: 0.5, 3: -1})
+Out[27]: 
+          0         1         2
+0  0.788333  0.500000       NaN
+1 -0.572234  0.500000       NaN
+2  0.697601  0.500000       NaN
+3 -0.496746  0.500000 -1.236334
+4  0.600980  0.500000 -0.820252
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
+In [28]: _ = df.fillna(0, inplace=True)
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.py:3369: FutureWarning: fillna with inplace=True  will return None from pandas 0.11 onward
+  " from pandas 0.11 onward", FutureWarning)
+
+In [29]: _ = df.fillna(0, inplace=True)
+
+In [30]: df
+Out[30]: 
+          0         1         2
+0  0.788333  0.000000  0.000000
+1 -0.572234  0.000000  0.000000
+2  0.697601  0.000000  0.000000
+3 -0.496746  0.000000 -1.236334
+4  0.600980  0.000000 -0.820252
+5 -0.019347 -0.386139  0.062324
+6  0.320423 -0.993136 -0.594385
+
+In [31]: df = DataFrame(np.random.randn(6, 3))
+
+In [32]:  df.ix[2:, 1] = NA; df.ix[4:, 2] = NA
+IndentationError: unexpected indent
+
+If you want to paste code into IPython, try the %paste and %cpaste magic functions.
+
+In [33]: f.ix[2:, 1] = NA; df.ix[4:, 2] = NA
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/Users/Makindo/<ipython-input-33-c932ac1855dd> in <module>()
+----> 1 f.ix[2:, 1] = NA; df.ix[4:, 2] = NA
+
+AttributeError: 'builtin_function_or_method' object has no attribute 'ix'
+
+In [34]: df = DataFrame(np.random.randn(6, 3))
+
+In [35]: df.ix[2:, 1] = NA; df.ix[4:, 2] = NA
+
+In [36]: df
+Out[36]: 
+          0         1         2
+0  1.547580  1.230995  0.638227
+1 -0.048412  0.364522  0.353811
+2 -0.187928       NaN -1.080459
+3 -0.347019       NaN  0.985479
+4 -0.232270       NaN       NaN
+5 -1.860884       NaN       NaN
+
+In [37]: df.fillna(method='ffill')
+Out[37]: 
+          0         1         2
+0  1.547580  1.230995  0.638227
+1 -0.048412  0.364522  0.353811
+2 -0.187928  0.364522 -1.080459
+3 -0.347019  0.364522  0.985479
+4 -0.232270  0.364522  0.985479
+5 -1.860884  0.364522  0.985479
+
+In [38]: df.fillna(method='ffill', limit=2)
+Out[38]: 
+          0         1         2
+0  1.547580  1.230995  0.638227
+1 -0.048412  0.364522  0.353811
+2 -0.187928  0.364522 -1.080459
+3 -0.347019  0.364522  0.985479
+4 -0.232270       NaN  0.985479
+5 -1.860884       NaN  0.985479
+
+In [39]: data = Series([1., NA, 3.5, NA, 7])
+
+In [40]: data.fillna(data.mean())
+Out[40]: 
+0    1.000000
+1    3.833333
+2    3.500000
+3    3.833333
+4    7.000000 
 
 
 
