@@ -2581,7 +2581,130 @@ Out[40]:
 1    3.833333
 2    3.500000
 3    3.833333
-4    7.000000 
+4    7.000000
+
+#Hierarchical indexing 
+
+ In [3]: from pandas import Series, DataFrame
+
+In [4]: import pandas as pd
+
+In [5]: from numpy import nan as NA
+
+In [6]: data = Series(np.random.randn(10),
+   ...: index=[['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'd', 'd'],
+   ...: [1, 2, 3, 1, 2, 3, 1, 2, 2, 3]])
+
+In [7]: data
+Out[7]: 
+a  1   -0.361078
+   2    0.542151
+   3   -0.361537
+b  1    0.323334
+   2   -0.053680
+   3   -0.484298
+c  1   -0.530027
+   2   -1.426505
+d  2    0.988490
+   3   -1.885477
+
+In [8]: data.index
+Out[8]: 
+MultiIndex
+[(a, 1), (a, 2), (a, 3), (b, 1), (b, 2), (b, 3), (c, 1), (c, 2), (d, 2), (d, 3)]
+
+In [9]: data['b']
+Out[9]: 
+1    0.323334
+2   -0.053680
+3   -0.484298
+
+In [10]: data['b':'c']
+Out[10]: 
+b  1    0.323334
+   2   -0.053680
+   3   -0.484298
+c  1   -0.530027
+   2   -1.426505
+
+In [11]: data.ix[['b', 'd']]
+Out[11]: 
+b  1    0.323334
+   2   -0.053680
+   3   -0.484298
+d  2    0.988490
+   3   -1.885477
+
+In [12]: data[;, 2]
+  File "<ipython-input-12-2b21966cba3f>", line 1
+    data[;, 2]
+         ^
+SyntaxError: invalid syntax
+
+
+In [13]: data[:, 2]
+Out[13]: 
+a    0.542151
+b   -0.053680
+c   -1.426505
+d    0.988490
+
+In [14]: data.unstack()
+Out[14]: 
+          1         2         3
+a -0.361078  0.542151 -0.361537
+b  0.323334 -0.053680 -0.484298
+c -0.530027 -1.426505       NaN
+d       NaN  0.988490 -1.885477
+
+In [15]: data.unstack().stack()
+Out[15]: 
+a  1   -0.361078
+   2    0.542151
+   3   -0.361537
+b  1    0.323334
+   2   -0.053680
+   3   -0.484298
+c  1   -0.530027
+   2   -1.426505
+d  2    0.988490
+   3   -1.885477
+
+In [16]: frame = DataFrame(np.arange(12).reshape((4, 3)),
+   ....: index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]],
+   ....: columns=[['Ohio', 'Ohio', 'Colorado'], ['Green', 'Red', 'Green']])
+
+In [17]: frame
+Out[17]: 
+      Ohio       Colorado
+     Green  Red     Green
+a 1      0    1         2
+  2      3    4         5
+b 1      6    7         8
+  2      9   10        11
+
+In [18]: frame.index.names = ['key1', 'key2'] 
+
+In [19]: frame.columns.names = ['state', 'color']
+
+In [20]: frame
+Out[20]: 
+state       Ohio       Colorado
+color      Green  Red     Green
+key1 key2                      
+a    1         0    1         2
+     2         3    4         5
+b    1         6    7         8
+     2         9   10        11
+
+In [21]: frame['Ohio']
+Out[21]: 
+color      Green  Red
+key1 key2            
+a    1         0    1
+     2         3    4
+b    1         6    7
+     2         9   10 
 
 
 
