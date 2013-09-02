@@ -2820,6 +2820,107 @@ Out[35]:
 5  two  2  5  2
 6  two  3  6  1
 
+#panel data 
+
+In [38]: import pandas.io.data as web
+
+In [39]: pdata = pd.Panel(dict((stk, web.get_data_yahoo(stk, '1/1/2009', '6/1/2012'))
+   ....: for stk in ['AAPL', 'GOOG', 'MSFT', 'DELL']))
+
+In [40]: pdata
+Out[40]: 
+<class 'pandas.core.panel.Panel'>
+Dimensions: 4 (items) x 861 (major_axis) x 6 (minor_axis)
+Items axis: AAPL to MSFT
+Major_axis axis: 2009-01-02 00:00:00 to 2012-06-01 00:00:00
+Minor_axis axis: Open to Adj Close
+
+In [41]: pdata
+Out[41]: 
+<class 'pandas.core.panel.Panel'>
+Dimensions: 4 (items) x 861 (major_axis) x 6 (minor_axis)
+Items axis: AAPL to MSFT
+Major_axis axis: 2009-01-02 00:00:00 to 2012-06-01 00:00:00
+Minor_axis axis: Open to Adj Close
+
+In [42]: pdata = pdata.swapaxes('items', 'minor')
+
+In [43]: pdata['Adj Close']
+Out[43]: 
+<class 'pandas.core.frame.DataFrame'>
+DatetimeIndex: 861 entries, 2009-01-02 00:00:00 to 2012-06-01 00:00:00
+Data columns:
+AAPL    861  non-null values
+DELL    861  non-null values
+GOOG    861  non-null values
+MSFT    861  non-null values
+dtypes: float64(4)
+
+In [44]: pdata.ix['Adj Close', '5/22/2012', :]
+Out[44]: 
+AAPL    541.68
+DELL     14.67
+GOOG    600.80
+MSFT     28.68
+Name: 2012-05-22 00:00:00
+
+In [45]: pdata.ix[:, '6/1/2012', :]
+Out[45]: 
+        Open    High     Low   Close    Volume  Adj Close
+AAPL  569.16  572.65  560.52  560.99  18606700     545.59
+DELL   12.15   12.30   12.05   12.07  19396700      11.74
+GOOG  571.79  572.65  568.35  570.98   3057900     570.98
+MSFT   28.76   28.96   28.44   28.45  56634300      27.42
+
+In [46]: pdata.ix['Adj Close', '6/1/2012', :]
+Out[46]: 
+AAPL    545.59
+DELL     11.74
+GOOG    570.98
+MSFT     27.42
+Name: 2012-06-01 00:00:00
+
+In [47]: pdata.ix['Adj Close', '5/22/2012':, :]
+Out[47]: 
+              AAPL   DELL    GOOG   MSFT
+Date                                    
+2012-05-22  541.68  14.67  600.80  28.68
+2012-05-23  554.90  12.15  609.46  28.05
+2012-05-24  549.80  12.11  603.66  28.01
+2012-05-25  546.86  12.12  591.53  28.00
+2012-05-29  556.56  12.32  594.34  28.49
+2012-05-30  563.27  12.22  588.23  28.27
+2012-05-31  561.87  12.00  580.86  28.13
+2012-06-01  545.59  11.74  570.98  27.42
+
+In [48]: stacked = pdata.ix[:, '5/30/2012':, :].to_frame()
+
+In [49]: stacked
+Out[49]: 
+                    Open    High     Low   Close    Volume  Adj Close
+Date       minor                                                     
+2012-05-30 AAPL   569.20  579.99  566.56  579.17  18908200     563.27
+           DELL    12.59   12.70   12.46   12.56  19787800      12.22
+           GOOG   588.16  591.90  583.53  588.23   1906700     588.23
+           MSFT    29.35   29.48   29.12   29.34  41585500      28.27
+2012-05-31 AAPL   580.74  581.50  571.46  577.73  17559800     561.87
+           DELL    12.53   12.54   12.33   12.33  19955500      12.00
+           GOOG   588.72  590.00  579.00  580.86   2968300     580.86
+           MSFT    29.30   29.42   28.94   29.19  39134000      28.13
+2012-06-01 AAPL   569.16  572.65  560.52  560.99  18606700     545.59
+           DELL    12.15   12.30   12.05   12.07  19396700      11.74
+           GOOG   571.79  572.65  568.35  570.98   3057900     570.98
+           MSFT    28.76   28.96   28.44   28.45  56634300      27.42
+
+In [50]: stacked.to_panel()
+Out[50]: 
+<class 'pandas.core.panel.Panel'>
+Dimensions: 6 (items) x 3 (major_axis) x 4 (minor_axis)
+Items axis: Open to Adj Close
+Major_axis axis: 2012-05-30 00:00:00 to 2012-06-01 00:00:00
+Minor_axis axis: AAPL to MSFT
+
+
 
 
 
