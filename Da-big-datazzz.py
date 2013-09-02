@@ -2704,7 +2704,122 @@ key1 key2
 a    1         0    1
      2         3    4
 b    1         6    7
-     2         9   10 
+     2         9   10
+
+#Reordering and sorting levels
+
+In [22]: frame.swaplevel('key1', 'key2')
+Out[22]: 
+state       Ohio       Colorado
+color      Green  Red     Green
+key2 key1                      
+1    a         0    1         2
+2    a         3    4         5
+1    b         6    7         8
+2    b         9   10        11
+
+In [23]: frame.sortlevel(1)
+Out[23]: 
+state       Ohio       Colorado
+color      Green  Red     Green
+key1 key2                      
+a    1         0    1         2
+b    1         6    7         8
+a    2         3    4         5
+b    2         9   10        11
+
+In [24]: frame.swaplevel(0, 1).sortlevel(0)
+Out[24]: 
+state       Ohio       Colorado
+color      Green  Red     Green
+key2 key1                      
+1    a         0    1         2
+     b         6    7         8
+2    a         3    4         5
+     b         9   10        11
+
+#summary statistics by level 
+
+In [26]: frame.sum(level='key2')
+Out[26]: 
+state   Ohio       Colorado
+color  Green  Red     Green
+key2                       
+1          6    8        10
+2         12   14        16
+
+In [27]: frame.sum(level='color', axis=1)
+Out[27]: 
+color      Green  Red
+key1 key2            
+a    1         2    1
+     2         8    4
+b    1        14    7
+     2        20   10
+
+#Using a dataframe's columns 
+
+ValueError: arrays must all be same length
+
+In [29]: frame = DataFrame({'a': range(7), 'b': range(7, 0, -1),
+   ....: 'c': ['one', 'one', 'one', 'two', 'two', 'two', 'two'],
+   ....: 'd': [0, 1, 2, 0, 1, 2, 3]})
+
+In [30]: frame
+Out[30]: 
+   a  b    c  d
+0  0  7  one  0
+1  1  6  one  1
+2  2  5  one  2
+3  3  4  two  0
+4  4  3  two  1
+5  5  2  two  2
+6  6  1  two  3
+
+In [31]: frame2 = frame.set_index(['c', 'd'])
+
+In [32]: frame2
+Out[32]: 
+       a  b
+c   d      
+one 0  0  7
+    1  1  6
+    2  2  5
+two 0  3  4
+    1  4  3
+    2  5  2
+    3  6  1
+
+In [33]: frame.set_index(['c', 'd'] drop=False)
+  File "<ipython-input-33-7c781d1c6d07>", line 1
+    frame.set_index(['c', 'd'] drop=False)
+                                  ^
+SyntaxError: invalid syntax
+
+
+In [34]: frame.set_index(['c', 'd'], drop=False)
+Out[34]: 
+       a  b    c  d
+c   d              
+one 0  0  7  one  0
+    1  1  6  one  1
+    2  2  5  one  2
+two 0  3  4  two  0
+    1  4  3  two  1
+    2  5  2  two  2
+    3  6  1  two  3
+
+In [35]: frame2.reset_index()
+Out[35]: 
+     c  d  a  b
+0  one  0  0  7
+1  one  1  1  6
+2  one  2  2  5
+3  two  0  3  4
+4  two  1  4  3
+5  two  2  5  2
+6  two  3  6  1
+
 
 
 
