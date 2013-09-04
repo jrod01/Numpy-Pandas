@@ -2585,7 +2585,7 @@ Out[40]:
 
 #Hierarchical indexing 
 
- In [3]: from pandas import Series, DataFrame
+In [3]: from pandas import Series, DataFrame
 
 In [4]: import pandas as pd
 
@@ -2922,17 +2922,193 @@ Minor_axis axis: AAPL to MSFT
 
 
 
+# CH6 Data loading, storage, and file formats.
+
+
+
+#reading and writing Data in text format. 
+
+n [21]: df = pd.read_csv('Repos/pydata-book/ch06/ex1.csv')
+
+In [22]: df
+Out[22]: 
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+
+In [23]: pd.read_table('Repos/pydata-book/ch06/ex1.csv', sep=',')
+Out[23]: 
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+
+In [24]: !cat Repos/pydata-book/ch06/ex1.csv
+a,b,c,d,message
+1,2,3,4,hello
+5,6,7,8,world
+9,10,11,12,foo
+
+In [27]: pd.read_csv('Repos/pydata-book/ch06/ex2.csv', header=None)
+Out[27]: 
+   0   1   2   3      4
+0  1   2   3   4  hello
+1  5   6   7   8  world
+2  9  10  11  12    foo
+
+In [28]: pd.read_csv('Repos/pydata-book/ch06/ex2.csv', names=['a', 'b', 'c', 'd', 'message'])
+Out[28]: 
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+
+In [29]: names = ['a', 'b', 'c', 'd', 'message']
+
+In [30]: pd.read_csv('Repos/pydata-book/ch06/ex2.csv' names=names, index_col='message')
+  File "<ipython-input-30-a6658363ac5c>", line 1
+    pd.read_csv('Repos/pydata-book/ch06/ex2.csv' names=names, index_col='message')
+                                                     ^
+SyntaxError: invalid syntax
+
+
+In [31]: pd.read_csv('Repos/pydata-book/ch06/ex2.csv', names=names, index_col='message')
+Out[31]: 
+         a   b   c   d
+message               
+hello    1   2   3   4
+world    5   6   7   8
+foo      9  10  11  12
+
+In [32]: !cat (Repos/pydata-book/ch06/cvs_mindex.csv
+
+
+In [33]: !cat Repos/pydata-book/ch06/cvs_mindex.csv
+cat: Repos/pydata-book/ch06/cvs_mindex.csv: No such file or directory
+
+In [34]: 
+
+In [34]: !cat Repos/pydata-book/ch06/csv_mindex.csv
+key1,key2,value1,value2
+one,a,1,2
+one,b,3,4
+one,c,5,6
+one,d,7,8
+two,a,9,10
+two,b,11,12
+two,c,13,14
+two,d,15,16
+
+In [36]: parsed = pd.read_csv('Repos/pydata-book/ch06/csv_mindex.csv', index_col=['key1', 'key2'])
+
+In [37]: parsed
+Out[37]: 
+           value1  value2
+key1 key2                
+one  a          1       2
+     b          3       4
+     c          5       6
+     d          7       8
+two  a          9      10
+     b         11      12
+     c         13      14
+     d         15      16
+
+
+
+list(open('Repos/pydata-book/ch06/ex3.txt'))
+
+result = pd.read_table('Repos/pydata-book/ch06/ex3.txt', sep='\s+')
+
+pd.read_csv('Repos/pydata-book/ch06/ex4.csv', skiprows=[0, 2, 3])
+
+In [38]: list(open('Repos/pydata-book/ch06/ex3.txt'))
+Out[38]: 
+['            A         B         C\n',
+ 'aaa -0.264438 -1.026059 -0.619500\n',
+ 'bbb  0.927272  0.302904 -0.032399\n',
+ 'ccc -0.264273 -0.386314 -0.217601\n',
+ 'ddd -0.871858 -0.348382  1.100491\n']
+
+In [39]: result = pd.read_table('Repos/pydata-book/ch06/ex3.txt', sep='\s+')
+
+In [40]: result
+Out[40]: 
+            A         B         C
+aaa -0.264438 -1.026059 -0.619500
+bbb  0.927272  0.302904 -0.032399
+ccc -0.264273 -0.386314 -0.217601
+ddd -0.871858 -0.348382  1.100491
+
+In [41]: !cat Repos/pydata-book/ch06/ex4.csv
+# hey!
+a,b,c,d,message
+# just wanted to make things more difficult for you
+# who reads CSV files with computers, anyway?
+1,2,3,4,hello
+5,6,7,8,world
+9,10,11,12,foo
+In [42]: pd.read_csv('Repos/pydata-book/ch06/ex4.csv' skiprows=[0, 2, 3])
+  File "<ipython-input-42-ab55bc1020e4>", line 1
+    pd.read_csv('Repos/pydata-book/ch06/ex4.csv' skiprows=[0, 2, 3])
+                                                        ^
+SyntaxError: invalid syntax
+
+
+In [43]: pd.read_csv('Repos/pydata-book/ch06/ex4.csv', skiprows=[0, 2, 3])
+Out[43]: 
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+
+
+
+In [44]: !cat Repos/pydata-book/ch06/ex5.csv
+something,a,b,c,d,message
+one,1,2,3,4,NA
+two,5,6,,8,world
+three,9,10,11,12,foo
+
+In [45]: result = pd.read_csv('Repos/pydata-book/ch06/ex5.csv')
+
+In [46]: result
+Out[46]: 
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       two  5   6 NaN   8   world
+2     three  9  10  11  12     foo
+
+
+Out[48]: 
+  something      a      b      c      d message
+0     False  False  False  False  False    True
+1     False  False  False   True  False   False
+2     False  False  False  False  False   False
+
+In [49]: result = pd.read_csv('Repos/pydata-book/ch06/ex5.csv', na_values=['NULL'])
+
+In [50]: result
+Out[50]: 
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       two  5   6 NaN   8   world
+2     three  9  10  11  12     foo
+
+In [51]: sentinels = {'message': ['foo', 'NA'], 'something':['two']}
 
 
 
 
+In [53]: sentinels = {'message': ['foo', 'NA'], 'something': ['two']}
 
-
-
-
-
-
-
+In [54]: pd.read_csv('Repos/pydata-book/ch06/ex5.csv', na_values=sentinels)
+Out[54]: 
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       NaN  5   6 NaN   8   world
+2     three  9  10  11  12     NaN
 
 
 
