@@ -2928,7 +2928,7 @@ Minor_axis axis: AAPL to MSFT
 
 #reading and writing Data in text format. 
 
-n [21]: df = pd.read_csv('Repos/pydata-book/ch06/ex1.csv')
+In [21]: df = pd.read_csv('Repos/pydata-book/ch06/ex1.csv')
 
 In [22]: df
 Out[22]: 
@@ -3109,6 +3109,86 @@ Out[54]:
 0       one  1   2   3   4     NaN
 1       NaN  5   6 NaN   8   world
 2     three  9  10  11  12     NaN
+
+
+
+#Reading Text Files in Pieces 
+
+In [1]: from pandas import Series, DataFrame
+
+In [2]: import pandas as pd
+
+In [3]: result = pd.read_csv('Repos/pydata-book/ch06/ex6.csv')
+
+In [4]: result
+Out[4]: 
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 10000 entries, 0 to 9999
+Data columns:
+one      10000  non-null values
+two      10000  non-null values
+three    10000  non-null values
+four     10000  non-null values
+key      10000  non-null values
+dtypes: float64(4), object(1)
+
+In [5]: pd.read_csv('Repos/pydata-book/ch06/ex6.csv', nrows=5)
+Out[5]: 
+        one       two     three      four key
+0  0.467976 -0.038649 -0.295344 -1.824726   L
+1 -0.358893  1.404453  0.704965 -0.200638   B
+2 -0.501840  0.659254 -0.421691 -0.057688   G
+3  0.204886  1.074134  1.388361 -0.982404   R
+4  0.354628 -0.133116  0.283763 -0.837063   Q
+
+In [6]: chunker = pd.read_csv('Repos/pydata-book/ch06/ex6.csv', chunksize=1000) 
+In [7]: chunker
+Out[7]: <pandas.io.parsers.TextFileReader at 0x46958f0>
+
+In [8]: chunker = pd.read_csv('Repos/pydata-book/ch06/ex6.csv', chunksize=1000) 
+In [9]: tot = Series([])
+
+In [10]: for piece in chunker:
+   ....:     tot = tot.add(piece['key'].value_counts(), fill_calue=0)
+   ....:     tot = tot.order(ascending=False)
+   ....:     
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-10-a03e91b83aec> in <module>()
+      1 for piece in chunker:
+----> 2     tot = tot.add(piece['key'].value_counts(), fill_calue=0)
+      3     tot = tot.order(ascending=False)
+      4 
+
+TypeError: f() got an unexpected keyword argument 'fill_calue'
+
+In [11]: tot[:10]
+Out[11]: []
+
+In [12]: chunker = pd.read_csv('Repos/pydata-book/ch06/ex6.csv', chunksize=1000)
+
+In [13]: tot = Series([])
+
+In [14]: for piece in chunker:
+   ....:     tot = tot.add(piece['key'].value_counts(), fill_value=0)
+   ....:     tot = tot.order(ascending=False)
+   ....:     
+
+In [15]: tot[:10]
+Out[15]: 
+E    368
+X    364
+L    346
+O    343
+Q    340
+M    338
+J    337
+F    335
+K    334
+H    330
+
+# writing data out text format 
+
 
 
 
