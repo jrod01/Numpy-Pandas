@@ -3189,6 +3189,194 @@ H    330
 
 # writing data out text format 
 
+n [16]: data - pd.read_csv('Repos/pydata-book/ch06/ex5.csv')
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-16-0576ec302d2d> in <module>()
+----> 1 data - pd.read_csv('Repos/pydata-book/ch06/ex5.csv')
+
+NameError: name 'data' is not defined
+
+In [17]: data = pd.read_csv('Repos/pydata-book/ch06/ex5.csv')
+
+In [18]: data
+Out[18]: 
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       two  5   6 NaN   8   world
+2     three  9  10  11  12     foo
+
+In [19]: data.to_csv('Repos/pydata-book/ch06/out.csv')
+
+In [20]: !cat Repos/pydata-book/ch06/out.csv
+,something,a,b,c,d,message
+0,one,1,2,3.0,4,
+1,two,5,6,,8,world
+2,three,9,10,11.0,12,foo
+
+In [21]: data.to_csv(sys.stdout, sep='|')
+|something|a|b|c|d|message
+0|one|1|2|3.0|4|
+1|two|5|6||8|world
+2|three|9|10|11.0|12|foo
+
+In [22]: data.to_csv(sys.stdout, na_rep='NULL')
+,something,a,b,c,d,message
+0,one,1,2,3.0,4,NULL
+1,two,5,6,NULL,8,world
+2,three,9,10,11.0,12,foo
+
+In [23]: data.to_csv(sys.stdout, index+False, header=False)
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-23-0940077bbfd2> in <module>()
+----> 1 data.to_csv(sys.stdout, index+False, header=False)
+
+NameError: name 'index' is not defined
+
+In [24]: data.to_csv(sys.stdout, index=False, header=False)
+one,1,2,3.0,4,
+two,5,6,,8,world
+three,9,10,11.0,12,foo
+
+In [25]: data.to_csv(sys.stdout, index=False, cols=['a', 'b', 'c']))
+  File "<ipython-input-25-194bb5ec57ae>", line 1
+    data.to_csv(sys.stdout, index=False, cols=['a', 'b', 'c']))
+                                                              ^
+SyntaxError: invalid syntax
+
+
+In [26]: data.to_csv(sys.stdout, index=False, cols=['a', 'b', 'c']))
+  File "<ipython-input-26-194bb5ec57ae>", line 1
+    data.to_csv(sys.stdout, index=False, cols=['a', 'b', 'c']))
+                                                              ^
+SyntaxError: invalid syntax
+
+
+In [27]: data.to_csv(sys.stdout, index=False, cols=['a', 'b', 'c'])
+a,b,c
+1,2,3.0
+5,6,
+9,10,11.0
+
+In [28]: dates = pd.date_range('1/1/2000', periods=7)
+
+In [29]: ts = Series(np.arange(7), index=dates)
+
+In [30]: ts.to_csv('ch06/tseries.csv')
+---------------------------------------------------------------------------
+IOError                                   Traceback (most recent call last)
+/Users/Makindo/<ipython-input-30-f94f07303060> in <module>()
+----> 1 ts.to_csv('ch06/tseries.csv')
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/series.pyc in to_csv(self, path, index, sep, na_rep, float_format, header, index_label, mode, nanRep, encoding)
+   2726                   float_format=float_format, header=header,
+   2727                   index_label=index_label, mode=mode, nanRep=nanRep,
+-> 2728                   encoding=encoding)
+   2729 
+   2730     def dropna(self):
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.pyc in to_csv(self, path_or_buf, sep, na_rep, float_format, cols, header, index, index_label, mode, nanRep, encoding, quoting, line_terminator)
+   1399             close = False
+   1400         else:
+-> 1401             f = com._get_handle(path_or_buf, mode, encoding=encoding)
+   1402             close = True
+   1403 
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/common.pyc in _get_handle(path, mode, encoding, compression)
+   1151             f = open(path, mode, errors='replace')
+   1152     else:
+-> 1153         f = open(path, mode)
+   1154     return f
+   1155 
+
+IOError: [Errno 2] No such file or directory: 'ch06/tseries.csv'
+
+In [31]: ts.to_csv('Repos/pydata-book/ch06/tseries.csv')
+
+In [32]: !cat Repos/pydata-book/ch06/tseries.csv
+2000-01-01 00:00:00,0
+2000-01-02 00:00:00,1
+2000-01-03 00:00:00,2
+2000-01-04 00:00:00,3
+2000-01-05 00:00:00,4
+2000-01-06 00:00:00,5
+2000-01-07 00:00:00,6
+
+In [33]: Series.from_csv('Repos/pydata-book/cho06/tseries.csv', parse_dates=True)
+---------------------------------------------------------------------------
+Exception                                 Traceback (most recent call last)
+/Users/Makindo/<ipython-input-33-55f0f06e68ed> in <module>()
+----> 1 Series.from_csv('Repos/pydata-book/cho06/tseries.csv', parse_dates=True)
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/series.pyc in from_csv(cls, path, sep, parse_dates, header, index_col, encoding)
+   2688         df = DataFrame.from_csv(path, header=header, index_col=index_col,
+   2689                                 sep=sep, parse_dates=parse_dates,
+-> 2690                                 encoding=encoding)
+   2691         result = df.icol(0)
+   2692         result.index.name = result.name = None
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/core/frame.pyc in from_csv(cls, path, header, sep, index_col, parse_dates, encoding)
+   1192         return read_table(path, header=header, sep=sep,
+   1193                           parse_dates=parse_dates, index_col=index_col,
+-> 1194                           encoding=encoding)
+   1195 
+   1196     def to_sparse(self, fill_value=None, kind='block'):
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/io/parsers.pyc in parser_f(filepath_or_buffer, sep, dialect, compression, doublequote, escapechar, quotechar, quoting, skipinitialspace, lineterminator, header, index_col, names, prefix, skiprows, skipfooter, skip_footer, na_values, true_values, false_values, delimiter, converters, dtype, usecols, engine, delim_whitespace, as_recarray, na_filter, compact_ints, use_unsigned, low_memory, buffer_lines, warn_bad_lines, error_bad_lines, keep_default_na, thousands, comment, decimal, parse_dates, keep_date_col, dayfirst, date_parser, memory_map, nrows, iterator, chunksize, verbose, encoding, squeeze)
+    397                     buffer_lines=buffer_lines)
+    398 
+--> 399         return _read(filepath_or_buffer, kwds)
+    400 
+    401     parser_f.__name__ = name
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/io/parsers.pyc in _read(filepath_or_buffer, kwds)
+    206 
+    207     # Create the parser.
+
+--> 208     parser = TextFileReader(filepath_or_buffer, **kwds)
+    209 
+    210     if nrows is not None:
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/io/parsers.pyc in __init__(self, f, engine, **kwds)
+    505             self.options['has_index_names'] = kwds['has_index_names']
+    506 
+--> 507         self._make_engine(self.engine)
+    508 
+    509     def _get_options_with_defaults(self, engine):
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/io/parsers.pyc in _make_engine(self, engine)
+    607     def _make_engine(self, engine='c'):
+    608         if engine == 'c':
+--> 609             self._engine = CParserWrapper(self.f, **self.options)
+    610         else:
+    611             if engine == 'python':
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/io/parsers.pyc in __init__(self, src, **kwds)
+    888         # #2442
+
+    889         kwds['allow_leading_cols'] = self.index_col is not False
+--> 890         self._reader = _parser.TextReader(src, **kwds)
+    891 
+    892         # XXX
+
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/_parser.so in pandas._parser.TextReader.__cinit__ (pandas/src/parser.c:2771)()
+
+/Library/Python/2.7/site-packages/pandas-0.10.1-py2.7-macosx-10.8-intel.egg/pandas/_parser.so in pandas._parser.TextReader._setup_parser_source (pandas/src/parser.c:4810)()
+
+Exception: File Repos/pydata-book/cho06/tseries.csv does not exist
+
+In [34]: Series.from_csv('Repos/pydata-book/ch06/tseries.csv', parse_dates=True)
+Out[34]: 
+2000-01-01    0
+2000-01-02    1
+2000-01-03    2
+2000-01-04    3
+2000-01-05    4
+2000-01-06    5
+2000-01-07    6
+
 
 
 
